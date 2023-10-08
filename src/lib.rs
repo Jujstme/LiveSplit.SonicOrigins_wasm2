@@ -416,6 +416,7 @@ struct Settings {
     #[default = true]
     /// Scrap Brain Zone - Act 2
     s1_scrap_brain_2: bool,
+    #[default = true]
     /// Scrap Brain Zone - Act 3
     s1_scrap_brain_3: bool,
     #[default = true]
@@ -538,6 +539,7 @@ struct Settings {
     #[default = true]
     /// Oil Ocean Zone - Act 2
     s2_oil_ocean_2: bool,
+    #[default = true]
     /// Metropolis Zone - Act 1
     s2_metropolis_1: bool,
     #[default = true]
