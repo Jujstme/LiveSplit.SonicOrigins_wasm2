@@ -26,12 +26,15 @@ impl Rtti {
             .read::<Address64>(address.add_signed(-0x8))
             .ok()?
             .add(0xC);
+
         let final_addr = self.base_address + process.read::<u32>(base).ok()? + 0x10 + 0x4;
-        let rtti_name = process.read::<ArrayCString<128>>(final_addr).ok()?;
+        process.read(final_addr).ok()
+
+        //let rtti_name = process.read::<ArrayCString<128>>(final_addr).ok()?;
         //let name = String::from_utf8_lossy(rtti_name.as_bytes());
         //let string = name.replace("@@", "").replace('@', "::");
         //cache.insert(address, string.clone());
-        Some(rtti_name)
+        //Some(rtti_name)
         //}
     }
 }

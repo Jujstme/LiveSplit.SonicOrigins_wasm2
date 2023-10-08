@@ -23,10 +23,13 @@ mod rtti;
 use rtti::Rtti;
 mod sonic1;
 mod sonic2;
+mod sonic3;
 mod soniccd;
 
 asr::panic_handler!();
 asr::async_main!(nightly);
+
+const PROCESS_NAMES: &[&str] = &["SonicOrigins.exe"];
 
 async fn main() {
     let settings = Settings::register();
@@ -185,6 +188,454 @@ struct Settings {
     #[default = true]
     /// Sonic CD - Tidal Tempest - Act 3
     story_scd_tidal_tempest_3: bool,
+    #[default = true]
+    /// Sonic CD - Quartz Quadrant - Act 1
+    story_scd_quartz_quadrant_1: bool,
+    #[default = true]
+    /// Sonic CD - Quartz Quadrant - Act 2
+    story_scd_quartz_quadrant_2: bool,
+    #[default = true]
+    /// Sonic CD - Quartz Quadrant - Act 3
+    story_scd_quartz_quadrant_3: bool,
+    #[default = true]
+    /// Sonic CD - Wacky Workbench - Act 1
+    story_scd_wacky_workbench_1: bool,
+    #[default = true]
+    /// Sonic CD - Wacky Workbench - Act 2
+    story_scd_wacky_workbench_2: bool,
+    #[default = true]
+    /// Sonic CD - Wacky Workbench - Act 3
+    story_scd_wacky_workbench_3: bool,
+    #[default = true]
+    /// Sonic CD - Stardust Speedway - Act 1
+    story_scd_stardust_speedway_1: bool,
+    #[default = true]
+    /// Sonic CD - Stardust Speedway - Act 2
+    story_scd_stardust_speedway_2: bool,
+    #[default = true]
+    /// Sonic CD - Stardust Speedway - Act 3
+    story_scd_stardust_speedway_3: bool,
+    #[default = true]
+    /// Sonic CD - Metallic Madness - Act 1
+    story_scd_metallic_madness_1: bool,
+    #[default = true]
+    /// Sonic CD - Metallic Madness - Act 2
+    story_scd_metallic_madness_2: bool,
+    #[default = true]
+    /// Sonic CD - Metallic Madness - Act 3
+    story_scd_metallic_madness_3: bool,
+    #[default = true]
+    /// Sonic 2 - Emerald Hill Zone - Act 1
+    story_s2_emerald_hill_1: bool,
+    #[default = true]
+    /// Sonic 2 - Emerald Hill Zone - Act 2
+    story_s2_emerald_hill_2: bool,
+    #[default = true]
+    /// Sonic 2 - Chemical Plant Zone - Act 1
+    story_s2_chemical_plant_1: bool,
+    #[default = true]
+    /// Sonic 2 - Chemical Plant Zone - Act 2
+    story_s2_chemical_plant_2: bool,
+    #[default = true]
+    /// Sonic 2 - Aquatic Ruin Zone - Act 1
+    story_s2_aquatic_ruin_1: bool,
+    #[default = true]
+    /// Sonic 2 - Aquatic Ruin Zone - Act 2
+    story_s2_aquatic_ruin_2: bool,
+    #[default = true]
+    /// Sonic 2 - Casino Night Zone - Act 1
+    story_s2_casino_night_1: bool,
+    #[default = true]
+    /// Sonic 2 - Casino Night Zone - Act 2
+    story_s2_casino_night_2: bool,
+    #[default = true]
+    /// Sonic 2 - Hill Top Zone - Act 1
+    story_s2_hill_top_1: bool,
+    #[default = true]
+    /// Sonic 2 - Hill Top Zone - Act 2
+    story_s2_hill_top_2: bool,
+    #[default = true]
+    /// Sonic 2 - Mystic Cave Zone - Act 1
+    story_s2_mystic_cave_1: bool,
+    #[default = true]
+    /// Sonic 2 - Mystic Cave Zone - Act 2
+    story_s2_mystic_cave_2: bool,
+    #[default = true]
+    /// Sonic 2 - Oil Ocean Zone - Act 1
+    story_s2_oil_ocean_1: bool,
+    #[default = true]
+    /// Sonic 2 - Oil Ocean Zone - Act 2
+    story_s2_oil_ocean_2: bool,
+    #[default = true]
+    /// Sonic 2 - Metropolis Zone - Act 1
+    story_s2_metropolis_1: bool,
+    #[default = true]
+    /// Sonic 2 - Metropolis Zone - Act 2
+    story_s2_metropolis_2: bool,
+    #[default = true]
+    /// Sonic 2 - Metropolis Zone - Act 3
+    story_s2_metropolis_3: bool,
+    #[default = true]
+    /// Sonic 2 - Sky Chase Zone
+    story_s2_sky_chase: bool,
+    #[default = true]
+    /// Sonic 3 - Wing Fortress Zone
+    story_s2_wing_fortress: bool,
+    #[default = true]
+    /// Sonic 2 - Death Egg Zone
+    story_s2_death_egg: bool,
+    #[default = true]
+    /// Sonic 3&K - Angel Island Zone - Act 1
+    story_s3_angel_island_1: bool,
+    #[default = true]
+    /// Sonic 3&K - Angel Island Zone - Act 2
+    story_s3_angel_island_2: bool,
+    #[default = true]
+    /// Sonic 3&K - Hydrocity Zone - Act 1
+    story_s3_hydrocity_1: bool,
+    #[default = true]
+    /// Sonic 3&K - Hydrocity Zone - Act 2
+    story_s3_hydricity_2: bool,
+    #[default = true]
+    /// Sonic 3&K - Marble Garden Zone - Act 1
+    story_s3_marble_garden_1: bool,
+    #[default = true]
+    /// Sonic 3&K - Marble Garden Zone - Act 2
+    story_s3_marble_garden_2: bool,
+    #[default = true]
+    /// Sonic 3&K - Carnival Night Zone - Act 1
+    story_s3_carnival_night_1: bool,
+    #[default = true]
+    /// Sonic 3&K - Carnival Night Zone - Act 2
+    story_s3_carnival_night_2: bool,
+    #[default = true]
+    /// Sonic 3&K - Ice Cap Zone - Act 1
+    story_s3_ice_cap_1: bool,
+    #[default = true]
+    /// Sonic 3&K - Ice Cap Zone - Act 2
+    story_s3_ice_cap_2: bool,
+    #[default = true]
+    /// Sonic 3&K - Launch Base Zone - Act 1
+    story_s3_launch_base_1: bool,
+    #[default = true]
+    /// Sonic 3&K - Launch Base Zone - Act 2
+    story_s3_launch_base_2: bool,
+    #[default = true]
+    /// Sonic 3&K - Mushroom Hill Zone - Act 1
+    story_s3_mushroom_hill_1: bool,
+    #[default = true]
+    /// Sonic 3&K - Mushroom Hill Zone - Act 2
+    story_s3_mushroom_hill_2: bool,
+    #[default = true]
+    /// Sonic 3&K - Flying Battery Zone - Act 1
+    story_s3_flying_battery_1: bool,
+    #[default = true]
+    /// Sonic 3&K - Flying Battery Zone - Act 2
+    story_s3_flying_battery_2: bool,
+    #[default = true]
+    /// Sonic 3&K - Sandopolis Zone - Act 1
+    story_s3_sandopolis_1: bool,
+    #[default = true]
+    /// Sonic 3&K - Sandopolis Zone - Act 2
+    story_s3_sandopolis_2: bool,
+    #[default = true]
+    /// Sonic 3&K - Lava Reef Zone - Act 1
+    story_s3_lava_reef_1: bool,
+    #[default = true]
+    /// Sonic 3&K - Lava Reef Zone - Act 2
+    story_s3_lava_reef_2: bool,
+    #[default = true]
+    /// Sonic 3&K - Hidden Palace Zone
+    story_s3_hidden_palace: bool,
+    #[default = true]
+    /// Sonic 3&K - Sky Sanctuary Zone
+    story_s3_sky_sanctuary: bool,
+    #[default = true]
+    /// Sonic 3&K - Death Egg Zone - Act 1
+    story_s3_death_egg_1: bool,
+    #[default = true]
+    /// Sonic 3&K - Death Egg Zone - Act 2
+    story_s3_death_egg_2: bool,
+    #[default = true]
+    /// Sonic 3&K - Doomsday Zone
+    story_s3_doomsday: bool,
+    #[default = false]
+    /// ---------- SONIC 1 ----------
+    _sonic1: bool,
+    #[default = true]
+    /// --> Enable auto start
+    s1_start: bool,
+    #[default = true]
+    /// Green Hill Zone - Act 1
+    s1_green_hill_1: bool,
+    #[default = true]
+    /// Green Hill Zone - Act 2
+    s1_green_hill_2: bool,
+    #[default = true]
+    /// Green Hill Zone - Act 3
+    s1_green_hill_3: bool,
+    #[default = true]
+    /// Marble Zone - Act 1
+    s1_marble_1: bool,
+    #[default = true]
+    /// Marble Zone - Act 2
+    s1_marble_2: bool,
+    #[default = true]
+    /// Marble Zone - Act 3
+    s1_marble_3: bool,
+    #[default = true]
+    /// Spring Yard Zone - Act 1
+    s1_spring_yard_1: bool,
+    #[default = true]
+    /// Spring Yard Zone - Act 2
+    s1_spring_yard_2: bool,
+    #[default = true]
+    /// Spring Yard Zone - Act 3
+    s1_spring_yard_3: bool,
+    #[default = true]
+    /// Labyrinth Zone - Act 1
+    s1_labyrinth_1: bool,
+    #[default = true]
+    /// Labyrinth Zone - Act 2
+    s1_labyrinth_2: bool,
+    #[default = true]
+    /// Labyrinth Zone - Act 3
+    s1_labyrinth_3: bool,
+    #[default = true]
+    /// Star Light Zone - Act 1
+    s1_star_light_1: bool,
+    #[default = true]
+    /// Star Light Zone - Act 2
+    s1_star_light_2: bool,
+    #[default = true]
+    /// Star Light Zone - Act 3
+    s1_star_light_3: bool,
+    #[default = true]
+    /// Scrap Brain Zone - Act 1
+    s1_scrap_brain_1: bool,
+    #[default = true]
+    /// Scrap Brain Zone - Act 2
+    s1_scrap_brain_2: bool,
+    /// Scrap Brain Zone - Act 3
+    s1_scrap_brain_3: bool,
+    #[default = true]
+    /// Final Zone
+    s1_final_zone: bool,
+    #[default = false]
+    /// ---------- SONIC CD ----------
+    _soniccd: bool,
+    #[default = true]
+    /// --> Enable auto start
+    scd_start: bool,
+    #[default = true]
+    /// Palmtree Panic Zone - Act 1
+    scd_palmtree_panic_1: bool,
+    #[default = true]
+    /// Palmtree Panic Zone - Act 2
+    scd_palmtree_panic_2: bool,
+    #[default = true]
+    /// Palmtree Panic Zone - Act 3
+    scd_palmtree_panic_3: bool,
+    #[default = true]
+    /// Collision Chaos Zone - Act 1
+    scd_collision_chaos_1: bool,
+    #[default = true]
+    /// Collision Chaos Zone - Act 2
+    scd_collision_chaos_2: bool,
+    #[default = true]
+    /// Collision Chaos Zone - Act 3
+    scd_collision_chaos_3: bool,
+    #[default = true]
+    /// Tidal Tempest Zone - Act 1
+    scd_tidal_tempest_1: bool,
+    #[default = true]
+    /// Tidal Tempest Zone - Act 2
+    scd_tidal_tempest_2: bool,
+    #[default = true]
+    /// Tidal Tempest Zone - Act 3
+    scd_tidal_tempest_3: bool,
+    #[default = true]
+    /// Quartz Quadrant Zone - Act 1
+    scd_quartz_quadrant_1: bool,
+    #[default = true]
+    /// Quartz Quadrant Zone - Act 2
+    scd_quartz_quadrant_2: bool,
+    #[default = true]
+    /// Quartz Quadrant Zone - Act 3
+    scd_quartz_quadrant_3: bool,
+    #[default = true]
+    /// Wacky Workbench Zone - Act 1
+    scd_wacky_workbench_1: bool,
+    #[default = true]
+    /// Wacky Workbench Zone - Act 2
+    scd_wacky_workbench_2: bool,
+    #[default = true]
+    /// Wacky Workbench Zone - Act 3
+    scd_wacky_workbench_3: bool,
+    #[default = true]
+    /// Stardust Speedway Zone - Act 1
+    scd_stardust_speedway_1: bool,
+    #[default = true]
+    /// Stardust Speedway Zone - Act 2
+    scd_stardust_speedway_2: bool,
+    #[default = true]
+    /// Stardust Speedway Zone - Act 3
+    scd_stardust_speedway_3: bool,
+    #[default = true]
+    /// Metallic Madness Zone - Act 1
+    scd_metallic_madness_1: bool,
+    #[default = true]
+    /// Metallic Madness Zone - Act 2
+    scd_metallic_madness_2: bool,
+    #[default = true]
+    /// Metallic Madness Zone - Act 3
+    scd_metallic_madness_3: bool,
+    #[default = false]
+    /// ---------- SONIC 2 ----------
+    _sonic2: bool,
+    #[default = true]
+    /// --> Enable auto start
+    s2_start: bool,
+    #[default = true]
+    /// Emerald Hill Zone - Act 1
+    s2_emerald_hill_1: bool,
+    #[default = true]
+    /// Emerald Hill Zone - Act 2
+    s2_emerald_hill_2: bool,
+    #[default = true]
+    /// Chemical Plant Zone - Act 1
+    s2_chemical_plant_1: bool,
+    #[default = true]
+    /// Chemical Plant Zone - Act 2
+    s2_chemical_plant_2: bool,
+    #[default = true]
+    /// Aquatic Ruin Zone - Act 1
+    s2_aquatic_ruin_1: bool,
+    #[default = true]
+    /// Aquatic Ruin Zone - Act 2
+    s2_aquatic_ruin_2: bool,
+    #[default = true]
+    /// Casino Night Zone - Act 1
+    s2_casino_night_1: bool,
+    #[default = true]
+    /// Casino Night Zone - Act 2
+    s2_casino_night_2: bool,
+    #[default = true]
+    /// Hill Top Zone - Act 1
+    s2_hill_top_1: bool,
+    #[default = true]
+    /// Hill Top Zone - Act 2
+    s2_hill_top_2: bool,
+    #[default = true]
+    /// Mystic Cave Zone - Act 1
+    s2_mystic_cave_1: bool,
+    #[default = true]
+    /// Mystic Cave Zone - Act 2
+    s2_mystic_cave_2: bool,
+    #[default = true]
+    /// Oil Ocean Zone - Act 1
+    s2_oil_ocean_1: bool,
+    #[default = true]
+    /// Oil Ocean Zone - Act 2
+    s2_oil_ocean_2: bool,
+    /// Metropolis Zone - Act 1
+    s2_metropolis_1: bool,
+    #[default = true]
+    /// Metropolis Zone - Act 2
+    s2_metropolis_2: bool,
+    #[default = true]
+    /// Metropolis Zone - Act 3
+    s2_metropolis_3: bool,
+    #[default = true]
+    /// Sky Chase Zone
+    s2_sky_chase: bool,
+    #[default = true]
+    /// Wing Fortress Zone
+    s2_wing_fortress: bool,
+    #[default = true]
+    /// Death Egg Zone
+    s2_death_egg: bool,
+    #[default = false]
+    /// ---------- SONIC 3&K ----------
+    _sonic3: bool,
+    #[default = true]
+    /// --> Enable auto start
+    s3_start: bool,
+    #[default = true]
+    /// Angel Island Zone - Act 1
+    s3_angel_island_1: bool,
+    #[default = true]
+    /// Angel Island Zone - Act 2
+    s3_angel_island_2: bool,
+    #[default = true]
+    /// Hydrocity Zone - Act 1
+    s3_hydrocity_1: bool,
+    #[default = true]
+    /// Hydrocity Zone - Act 2
+    s3_hydrocity_2: bool,
+    #[default = true]
+    /// Marble Garden Zone - Act 1
+    s3_marble_garden_1: bool,
+    #[default = true]
+    /// Marble Garden Zone - Act 2
+    s3_marble_garden_2: bool,
+    #[default = true]
+    /// Carnival Night Zone - Act 1
+    s3_carnival_night_1: bool,
+    #[default = true]
+    /// Carnival Night Zone - Act 2
+    s3_carnival_night_2: bool,
+    #[default = true]
+    /// Ice Cap Zone - Act 1
+    s3_ice_cap_1: bool,
+    #[default = true]
+    /// Ice Cap Zone - Act 2
+    s3_ice_cap_2: bool,
+    #[default = true]
+    /// Launch Base Zone - Act 1
+    s3_launch_base_1: bool,
+    #[default = true]
+    /// Launch Base Zone - Act 2
+    s3_launch_base_2: bool,
+    #[default = true]
+    /// Mushroom Hill Zone - Act 1
+    s3_mushroom_hill_1: bool,
+    #[default = true]
+    /// Mushroom Hill Zone - Act 2
+    s3_mushroom_hill_2: bool,
+    #[default = true]
+    /// Flying Battery Zone - Act 1
+    s3_flying_battery_1: bool,
+    #[default = true]
+    /// Flying Battery Zone - Act 2
+    s3_flying_battery_2: bool,
+    #[default = true]
+    /// Sandopolis Zone - Act 1
+    s3_sandopolis_1: bool,
+    #[default = true]
+    /// Sandopolis Zone - Act 2
+    s3_sandopolis_2: bool,
+    #[default = true]
+    /// Lava Reef Zone - Act 1
+    s3_lava_reef_1: bool,
+    #[default = true]
+    /// Leve Reef Zone - Act 2
+    s3_lava_reef_2: bool,
+    #[default = true]
+    /// Hidden Palace Zone
+    s3_hidden_palace: bool,
+    #[default = true]
+    /// Sky Sanctuary Zone
+    s3_sky_sanctuary: bool,
+    #[default = true]
+    /// Death Egg Zone - Act 1
+    s3_death_egg_1: bool,
+    #[default = true]
+    /// Death Egg Zone - Act 2
+    s3_death_egg_2: bool,
+    #[default = true]
+    /// Doomsday Zone
+    s3_doomsday: bool,
 }
 
 #[derive(Default)]
@@ -240,6 +691,7 @@ struct Managers {
     sonic_1: sonic1::Sonic1,
     sonic_2: sonic2::Sonic2,
     sonic_cd: soniccd::SonicCD,
+    sonic_3: sonic3::Sonic3,
 }
 
 impl Managers {
@@ -248,6 +700,7 @@ impl Managers {
             sonic_1: sonic1::Sonic1::new(process, main_module_range)?,
             sonic_2: sonic2::Sonic2::new(process, main_module_range)?,
             sonic_cd: soniccd::SonicCD::new(process, main_module_range)?,
+            sonic_3: sonic3::Sonic3::new(process, main_module_range)?,
         })
     }
 }
@@ -276,31 +729,21 @@ fn update_loop(game: &Process, addresses: &mut Addresses, watchers: &mut Watcher
         }
     });
 
-    let cur_game = watchers.game.update_infallible({
-        if game_status.current == GameStatus::RetroEngine {
-            match game
-                .read::<u8>(addresses.current_rsdk_game)
-                .unwrap_or_default()
-            {
-                0 => Game::Sonic1,
-                1 => Game::Sonic2,
-                2 => Game::Sonic3,
-                3 => Game::SonicCD,
-                _ => match watchers.game.pair {
-                    Some(x) => x.current,
-                    _ => Game::Sonic1,
-                },
-            }
-        } else if game_status.current == GameStatus::MainMenu
-            || game_status.current == GameStatus::GameGear
+    let cur_game = watchers.game.update_infallible(match game_status.current {
+        GameStatus::RetroEngine => match game
+            .read::<u8>(addresses.current_rsdk_game)
+            .unwrap_or_default()
         {
-            Game::None
-        } else {
-            match watchers.game.pair {
+            0 => Game::Sonic1,
+            1 => Game::Sonic2,
+            2 => Game::Sonic3,
+            3 => Game::SonicCD,
+            _ => match watchers.game.pair {
                 Some(x) => x.current,
                 _ => Game::Sonic1,
-            }
-        }
+            },
+        },
+        GameStatus::MainMenu | GameStatus::GameGear => Game::None,
     });
 
     watchers
@@ -309,6 +752,7 @@ fn update_loop(game: &Process, addresses: &mut Addresses, watchers: &mut Watcher
             Game::Sonic1 => addresses.managers.sonic_1.get_game_mode(game),
             Game::Sonic2 => addresses.managers.sonic_2.get_game_mode(game),
             Game::SonicCD => addresses.managers.sonic_cd.get_game_mode(game),
+            Game::Sonic3 => addresses.managers.sonic_3.get_game_mode(game),
             _ => GameMode::Classic,
         });
 
@@ -316,6 +760,7 @@ fn update_loop(game: &Process, addresses: &mut Addresses, watchers: &mut Watcher
         Game::Sonic1 => addresses.managers.sonic_1.get_current_level(game),
         Game::Sonic2 => addresses.managers.sonic_2.get_current_level(game),
         Game::SonicCD => addresses.managers.sonic_cd.get_current_level(game),
+        Game::Sonic3 => addresses.managers.sonic_3.get_current_level(game),
         _ => LevelID::MainMenu,
     });
 
@@ -325,6 +770,7 @@ fn update_loop(game: &Process, addresses: &mut Addresses, watchers: &mut Watcher
             Game::Sonic1 => addresses.managers.sonic_1.get_start_trigger(game),
             Game::Sonic2 => addresses.managers.sonic_2.get_start_trigger(game),
             Game::SonicCD => addresses.managers.sonic_cd.get_start_trigger(game),
+            Game::Sonic3 => addresses.managers.sonic_3.get_start_trigger(game),
             _ => false,
         });
 
@@ -334,6 +780,7 @@ fn update_loop(game: &Process, addresses: &mut Addresses, watchers: &mut Watcher
             Game::Sonic1 => addresses.managers.sonic_1.is_in_time_bonus(game),
             Game::Sonic2 => addresses.managers.sonic_2.is_in_time_bonus(game),
             Game::SonicCD => addresses.managers.sonic_cd.is_in_time_bonus(game),
+            Game::Sonic3 => addresses.managers.sonic_3.is_in_time_bonus(),
             _ => false,
         });
 
@@ -343,6 +790,7 @@ fn update_loop(game: &Process, addresses: &mut Addresses, watchers: &mut Watcher
             Game::Sonic1 => addresses.managers.sonic_1.is_demo_mode(game),
             Game::Sonic2 => addresses.managers.sonic_2.is_demo_mode(game),
             Game::SonicCD => addresses.managers.sonic_cd.is_demo_mode(game),
+            Game::Sonic3 => addresses.managers.sonic_3.is_demo_mode(),
             _ => false,
         });
 
@@ -352,9 +800,15 @@ fn update_loop(game: &Process, addresses: &mut Addresses, watchers: &mut Watcher
 }
 
 fn start(watchers: &mut Watchers, settings: &Settings) -> bool {
-    let Some(game) = &watchers.game.pair else { return false };
-    let Some(game_mode) = &watchers.game_mode.pair else { return false };
-    let Some(start_trigger) = &watchers.start_trigger.pair else { return false };
+    let Some(game) = &watchers.game.pair else {
+        return false;
+    };
+    let Some(game_mode) = &watchers.game_mode.pair else {
+        return false;
+    };
+    let Some(start_trigger) = &watchers.start_trigger.pair else {
+        return false;
+    };
 
     if watchers.story_start_flag
         && watchers
@@ -371,27 +825,30 @@ fn start(watchers: &mut Watchers, settings: &Settings) -> bool {
             || game_mode.current == GameMode::Mirror)
         && start_trigger.changed_to(&true)
     {
-        true
+        settings.s1_start
     } else if game.current == Game::SonicCD
         && (game_mode.current == GameMode::Classic
             || game_mode.current == GameMode::Anniversary
             || game_mode.current == GameMode::Mirror)
         && start_trigger.changed_to(&true)
     {
-        true
+        settings.scd_start
     } else if game.current == Game::Sonic2
         && (game_mode.current == GameMode::Classic
             || game_mode.current == GameMode::Anniversary
             || game_mode.current == GameMode::Mirror)
         && start_trigger.changed_to(&true)
     {
-        true
+        settings.s2_start
+    } else if game.current == Game::Sonic3
+        && (game_mode.current == GameMode::Classic
+            || game_mode.current == GameMode::Anniversary
+            || game_mode.current == GameMode::Mirror)
+        && start_trigger.changed_to(&true)
+    {
+        settings.s3_start
     } else {
-        game.current == Game::Sonic3
-            && (game_mode.current == GameMode::Classic
-                || game_mode.current == GameMode::Anniversary
-                || game_mode.current == GameMode::Mirror)
-            && start_trigger.changed_to(&true)
+        false
     }
 }
 
@@ -399,8 +856,543 @@ fn split(watchers: &Watchers, settings: &Settings) -> bool {
     if watchers.demo_mode.pair.is_some_and(|val| val.current) {
         return false;
     }
+    let Some(game_mode) = &watchers.game_mode.pair else {
+        return false;
+    };
+    let Some(level_id) = &watchers.act_id.pair else {
+        return false;
+    };
 
-    false
+    if game_mode.current == GameMode::Classic
+        || game_mode.current == GameMode::Mirror
+        || game_mode.current == GameMode::Anniversary
+        || game_mode.current == GameMode::Story
+    {
+        match level_id.old {
+            LevelID::Sonic1_GreenHillAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s1_green_hill_1,
+                    _ => settings.s1_green_hill_1,
+                }) && level_id.current == LevelID::Sonic1_GreenHillAct2
+            }
+            LevelID::Sonic1_GreenHillAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s1_green_hill_2,
+                    _ => settings.s1_green_hill_2,
+                }) && level_id.current == LevelID::Sonic1_GreenHillAct3
+            }
+            LevelID::Sonic1_GreenHillAct3 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s1_green_hill_3,
+                    _ => settings.s1_green_hill_3,
+                }) && level_id.current == LevelID::Sonic1_MarbleAct1
+            }
+            LevelID::Sonic1_MarbleAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s1_marble_1,
+                    _ => settings.s1_marble_1,
+                }) && level_id.current == LevelID::Sonic1_MarbleAct2
+            }
+            LevelID::Sonic1_MarbleAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s1_marble_2,
+                    _ => settings.s1_marble_2,
+                }) && level_id.current == LevelID::Sonic1_MarbleAct2
+            }
+            LevelID::Sonic1_MarbleAct3 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s1_marble_3,
+                    _ => settings.s1_marble_3,
+                }) && level_id.current == LevelID::Sonic1_SpringYardAct1
+            }
+            LevelID::Sonic1_SpringYardAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s1_spring_yard_1,
+                    _ => settings.s1_spring_yard_1,
+                }) && level_id.current == LevelID::Sonic1_SpringYardAct2
+            }
+            LevelID::Sonic1_SpringYardAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s1_spring_yard_2,
+                    _ => settings.s1_spring_yard_2,
+                }) && level_id.current == LevelID::Sonic1_SpringYardAct3
+            }
+            LevelID::Sonic1_SpringYardAct3 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s1_spring_yard_3,
+                    _ => settings.s1_spring_yard_3,
+                }) && level_id.current == LevelID::Sonic1_LabyrinthAct1
+            }
+            LevelID::Sonic1_LabyrinthAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s1_labyrinth_1,
+                    _ => settings.s1_labyrinth_1,
+                }) && level_id.current == LevelID::Sonic1_LabyrinthAct2
+            }
+            LevelID::Sonic1_LabyrinthAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s1_labyrinth_2,
+                    _ => settings.s1_labyrinth_2,
+                }) && level_id.current == LevelID::Sonic1_LabyrinthAct3
+            }
+            LevelID::Sonic1_LabyrinthAct3 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s1_labyrinth_3,
+                    _ => settings.s1_labyrinth_3,
+                }) && level_id.current == LevelID::Sonic1_StarLightAct1
+            }
+            LevelID::Sonic1_StarLightAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s1_star_light_1,
+                    _ => settings.s1_star_light_1,
+                }) && level_id.current == LevelID::Sonic1_StarLightAct2
+            }
+            LevelID::Sonic1_StarLightAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s1_star_light_2,
+                    _ => settings.s1_star_light_2,
+                }) && level_id.current == LevelID::Sonic1_StarLightAct3
+            }
+            LevelID::Sonic1_StarLightAct3 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s1_star_light_3,
+                    _ => settings.s1_star_light_3,
+                }) && level_id.current == LevelID::Sonic1_ScrapBrainAct1
+            }
+            LevelID::Sonic1_ScrapBrainAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s1_scrap_brain_1,
+                    _ => settings.s1_scrap_brain_1,
+                }) && level_id.current == LevelID::Sonic1_ScrapBrainAct2
+            }
+            LevelID::Sonic1_ScrapBrainAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s1_scrap_brain_2,
+                    _ => settings.s1_scrap_brain_2,
+                }) && level_id.current == LevelID::Sonic1_ScrapBrainAct3
+            }
+            LevelID::Sonic1_ScrapBrainAct3 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s1_scrap_brain_3,
+                    _ => settings.s1_scrap_brain_3,
+                }) && level_id.current == LevelID::Sonic1_FinalZone
+            }
+            LevelID::Sonic1_FinalZone => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s1_final_zone,
+                    _ => settings.s1_final_zone,
+                }) && level_id.current == LevelID::Sonic1_Ending
+            }
+            LevelID::Sonic2_EmeraldHillAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s2_emerald_hill_1,
+                    _ => settings.s2_emerald_hill_1,
+                }) && level_id.current == LevelID::Sonic2_EmeraldHillAct2
+            }
+            LevelID::Sonic2_EmeraldHillAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s2_emerald_hill_2,
+                    _ => settings.s2_emerald_hill_2,
+                }) && level_id.current == LevelID::Sonic2_ChemicalPlantAct1
+            }
+            LevelID::Sonic2_ChemicalPlantAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s2_chemical_plant_1,
+                    _ => settings.s2_chemical_plant_1,
+                }) && level_id.current == LevelID::Sonic2_ChemicalPlantAct2
+            }
+            LevelID::Sonic2_ChemicalPlantAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s2_chemical_plant_2,
+                    _ => settings.s2_chemical_plant_2,
+                }) && level_id.current == LevelID::Sonic2_AquaticRuinAct1
+            }
+            LevelID::Sonic2_AquaticRuinAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s2_aquatic_ruin_1,
+                    _ => settings.s2_aquatic_ruin_1,
+                }) && level_id.current == LevelID::Sonic2_AquaticRuinAct2
+            }
+            LevelID::Sonic2_AquaticRuinAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s2_aquatic_ruin_2,
+                    _ => settings.s2_aquatic_ruin_2,
+                }) && level_id.current == LevelID::Sonic2_CasinoNightAct1
+            }
+            LevelID::Sonic2_CasinoNightAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s2_casino_night_1,
+                    _ => settings.s2_casino_night_1,
+                }) && level_id.current == LevelID::Sonic2_CasinoNightAct2
+            }
+            LevelID::Sonic2_CasinoNightAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s2_casino_night_2,
+                    _ => settings.s2_casino_night_2,
+                }) && level_id.current == LevelID::Sonic2_HillTopAct1
+            }
+            LevelID::Sonic2_HillTopAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s2_hill_top_1,
+                    _ => settings.s2_hill_top_1,
+                }) && level_id.current == LevelID::Sonic2_HillTopAct2
+            }
+            LevelID::Sonic2_HillTopAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s2_hill_top_2,
+                    _ => settings.s2_hill_top_2,
+                }) && level_id.current == LevelID::Sonic2_MysticCaveAct1
+            }
+            LevelID::Sonic2_MysticCaveAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s2_mystic_cave_1,
+                    _ => settings.s2_mystic_cave_1,
+                }) && level_id.current == LevelID::Sonic2_MysticCaveAct2
+            }
+            LevelID::Sonic2_MysticCaveAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s2_mystic_cave_2,
+                    _ => settings.s2_mystic_cave_2,
+                }) && level_id.current == LevelID::Sonic2_OilOceanAct1
+            }
+            LevelID::Sonic2_OilOceanAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s2_oil_ocean_1,
+                    _ => settings.s2_oil_ocean_1,
+                }) && level_id.current == LevelID::Sonic2_OilOceanAct2
+            }
+            LevelID::Sonic2_OilOceanAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s2_oil_ocean_2,
+                    _ => settings.s2_oil_ocean_2,
+                }) && level_id.current == LevelID::Sonic2_MetropolisAct1
+            }
+            LevelID::Sonic2_MetropolisAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s2_metropolis_1,
+                    _ => settings.s2_metropolis_1,
+                }) && level_id.current == LevelID::Sonic2_MetropolisAct2
+            }
+            LevelID::Sonic2_MetropolisAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s2_metropolis_2,
+                    _ => settings.s2_metropolis_2,
+                }) && level_id.current == LevelID::Sonic2_MetropolisAct3
+            }
+            LevelID::Sonic2_MetropolisAct3 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s2_metropolis_3,
+                    _ => settings.s2_metropolis_3,
+                }) && level_id.current == LevelID::Sonic2_SkyChase
+            }
+            LevelID::Sonic2_SkyChase => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s2_sky_chase,
+                    _ => settings.s2_sky_chase,
+                }) && level_id.current == LevelID::Sonic2_WingFortress
+            }
+            LevelID::Sonic2_WingFortress => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s2_wing_fortress,
+                    _ => settings.s2_wing_fortress,
+                }) && level_id.current == LevelID::Sonic2_DeathEgg
+            }
+            LevelID::Sonic2_DeathEgg => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s2_death_egg,
+                    _ => settings.s2_death_egg,
+                }) && level_id.current == LevelID::Sonic2_Ending
+            }
+            LevelID::Sonic3_AngelIslandAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_angel_island_1,
+                    _ => settings.s3_angel_island_1,
+                }) && level_id.current == LevelID::Sonic3_AngelIslandAct2
+            }
+            LevelID::Sonic3_AngelIslandAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_angel_island_2,
+                    _ => settings.s3_angel_island_2,
+                }) && level_id.current == LevelID::Sonic3_HydrocityAct1
+            }
+            LevelID::Sonic3_HydrocityAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_hydrocity_1,
+                    _ => settings.s3_hydrocity_1,
+                }) && level_id.current == LevelID::Sonic3_HydrocityAct2
+            }
+            LevelID::Sonic3_HydrocityAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_hydricity_2,
+                    _ => settings.s3_hydrocity_2,
+                }) && level_id.current == LevelID::Sonic3_MarbleGardenAct1
+            }
+            LevelID::Sonic3_MarbleGardenAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_marble_garden_1,
+                    _ => settings.s3_marble_garden_1,
+                }) && level_id.current == LevelID::Sonic3_MarbleGardenAct2
+            }
+            LevelID::Sonic3_MarbleGardenAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_marble_garden_2,
+                    _ => settings.s3_marble_garden_2,
+                }) && level_id.current == LevelID::Sonic3_CarnivalNightAct1
+            }
+            LevelID::Sonic3_CarnivalNightAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_carnival_night_1,
+                    _ => settings.s3_carnival_night_1,
+                }) && level_id.current == LevelID::Sonic3_CarnivalNightAct2
+            }
+            LevelID::Sonic3_CarnivalNightAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_carnival_night_2,
+                    _ => settings.s3_carnival_night_2,
+                }) && level_id.current == LevelID::Sonic3_IceCapAct1
+            }
+            LevelID::Sonic3_IceCapAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_ice_cap_1,
+                    _ => settings.s3_ice_cap_1,
+                }) && level_id.current == LevelID::Sonic3_IceCapAct2
+            }
+            LevelID::Sonic3_IceCapAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_ice_cap_2,
+                    _ => settings.s3_ice_cap_2,
+                }) && level_id.current == LevelID::Sonic3_LaunchBaseAct1
+            }
+            LevelID::Sonic3_LaunchBaseAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_launch_base_1,
+                    _ => settings.s3_launch_base_1,
+                }) && level_id.current == LevelID::Sonic3_LaunchBaseAct2
+            }
+            LevelID::Sonic3_LaunchBaseAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_launch_base_2,
+                    _ => settings.s3_launch_base_2,
+                }) && level_id.current == LevelID::Sonic3_MushroomHillAct1
+            }
+            LevelID::Sonic3_MushroomHillAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_mushroom_hill_1,
+                    _ => settings.s3_mushroom_hill_1,
+                }) && (level_id.current == LevelID::Sonic3_MushroomHillAct2
+                    || level_id.current == LevelID::Sonic3_HiddenPalace)
+            }
+            LevelID::Sonic3_MushroomHillAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_mushroom_hill_2,
+                    _ => settings.s3_mushroom_hill_2,
+                }) && (level_id.current == LevelID::Sonic3_FlyingBatteryAct1
+                    || level_id.current == LevelID::Sonic3_HiddenPalace)
+            }
+            LevelID::Sonic3_FlyingBatteryAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_flying_battery_1,
+                    _ => settings.s3_flying_battery_1,
+                }) && (level_id.current == LevelID::Sonic3_FlyingBatteryAct2
+                    || level_id.current == LevelID::Sonic3_HiddenPalace)
+            }
+            LevelID::Sonic3_FlyingBatteryAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_flying_battery_2,
+                    _ => settings.s3_flying_battery_2,
+                }) && (level_id.current == LevelID::Sonic3_SandopolisAct1
+                    || level_id.current == LevelID::Sonic3_HiddenPalace)
+            }
+            LevelID::Sonic3_SandopolisAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_sandopolis_1,
+                    _ => settings.s3_sandopolis_1,
+                }) && (level_id.current == LevelID::Sonic3_SandopolisAct2
+                    || level_id.current == LevelID::Sonic3_HiddenPalace)
+            }
+            LevelID::Sonic3_SandopolisAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_sandopolis_2,
+                    _ => settings.s3_sandopolis_2,
+                }) && (level_id.current == LevelID::Sonic3_LavaReefAct1
+                    || level_id.current == LevelID::Sonic3_HiddenPalace)
+            }
+            LevelID::Sonic3_LavaReefAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_lava_reef_1,
+                    _ => settings.s3_lava_reef_1,
+                }) && (level_id.current == LevelID::Sonic3_LavaReefAct2
+                    || level_id.current == LevelID::Sonic3_HiddenPalace)
+            }
+            LevelID::Sonic3_LavaReefAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_lava_reef_2,
+                    _ => settings.s3_lava_reef_2,
+                }) && level_id.current == LevelID::Sonic3_HiddenPalace
+            }
+            LevelID::Sonic3_HiddenPalace => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_hidden_palace,
+                    _ => settings.s3_hidden_palace,
+                }) && level_id.current == LevelID::Sonic3_SkySanctuary
+            }
+            LevelID::Sonic3_SkySanctuary => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_sky_sanctuary,
+                    _ => settings.s3_sky_sanctuary,
+                }) && (level_id.current == LevelID::Sonic3_DeathEggAct1
+                    || level_id.current == LevelID::Sonic3_Ending)
+            }
+            LevelID::Sonic3_DeathEggAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_death_egg_1,
+                    _ => settings.s3_death_egg_1,
+                }) && level_id.current == LevelID::Sonic3_DeathEggAct2
+            }
+            LevelID::Sonic3_DeathEggAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_death_egg_2,
+                    _ => settings.s3_death_egg_2,
+                }) && (level_id.current == LevelID::Sonic3_Doomsday
+                    || level_id.current == LevelID::Sonic3_Ending)
+            }
+            LevelID::Sonic3_Doomsday => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_s3_doomsday,
+                    _ => settings.s3_doomsday,
+                }) && level_id.current == LevelID::Sonic3_Ending
+            }
+            LevelID::SonicCD_PalmtreePanicAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_scd_palmtree_panic_1,
+                    _ => settings.scd_palmtree_panic_1,
+                }) && level_id.current == LevelID::SonicCD_PalmtreePanicAct2
+            }
+            LevelID::SonicCD_PalmtreePanicAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_scd_palmtree_panic_2,
+                    _ => settings.scd_palmtree_panic_2,
+                }) && level_id.current == LevelID::SonicCD_PalmtreePanicAct3
+            }
+            LevelID::SonicCD_PalmtreePanicAct3 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_scd_palmtree_panic_3,
+                    _ => settings.scd_palmtree_panic_3,
+                }) && level_id.current == LevelID::SonicCD_CollisionChaosAct1
+            }
+            LevelID::SonicCD_CollisionChaosAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_scd_collision_chaos_1,
+                    _ => settings.scd_collision_chaos_1,
+                }) && level_id.current == LevelID::SonicCD_CollisionChaosAct2
+            }
+            LevelID::SonicCD_CollisionChaosAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_scd_collision_chaos_2,
+                    _ => settings.scd_collision_chaos_2,
+                }) && level_id.current == LevelID::SonicCD_CollisionChaosAct3
+            }
+            LevelID::SonicCD_CollisionChaosAct3 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_scd_collision_chaos_3,
+                    _ => settings.scd_collision_chaos_3,
+                }) && level_id.current == LevelID::SonicCD_TidalTempestAct1
+            }
+            LevelID::SonicCD_TidalTempestAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_scd_tidal_tempest_1,
+                    _ => settings.scd_tidal_tempest_1,
+                }) && level_id.current == LevelID::SonicCD_TidalTempestAct2
+            }
+            LevelID::SonicCD_TidalTempestAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_scd_tidal_tempest_2,
+                    _ => settings.scd_tidal_tempest_2,
+                }) && level_id.current == LevelID::SonicCD_TidalTempestAct3
+            }
+            LevelID::SonicCD_TidalTempestAct3 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_scd_tidal_tempest_3,
+                    _ => settings.scd_tidal_tempest_3,
+                }) && level_id.current == LevelID::SonicCD_QuartzQuadrantAct1
+            }
+            LevelID::SonicCD_QuartzQuadrantAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_scd_quartz_quadrant_1,
+                    _ => settings.scd_quartz_quadrant_1,
+                }) && level_id.current == LevelID::SonicCD_QuartzQuadrantAct2
+            }
+            LevelID::SonicCD_QuartzQuadrantAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_scd_quartz_quadrant_2,
+                    _ => settings.scd_quartz_quadrant_2,
+                }) && level_id.current == LevelID::SonicCD_QuartzQuadrantAct3
+            }
+            LevelID::SonicCD_QuartzQuadrantAct3 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_scd_quartz_quadrant_3,
+                    _ => settings.scd_quartz_quadrant_3,
+                }) && level_id.current == LevelID::SonicCD_WackyWorkbenchAct1
+            }
+            LevelID::SonicCD_WackyWorkbenchAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_scd_wacky_workbench_1,
+                    _ => settings.scd_wacky_workbench_1,
+                }) && level_id.current == LevelID::SonicCD_WackyWorkbenchAct2
+            }
+            LevelID::SonicCD_WackyWorkbenchAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_scd_wacky_workbench_2,
+                    _ => settings.scd_wacky_workbench_2,
+                }) && level_id.current == LevelID::SonicCD_WackyWorkbenchAct3
+            }
+            LevelID::SonicCD_WackyWorkbenchAct3 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_scd_wacky_workbench_3,
+                    _ => settings.scd_wacky_workbench_3,
+                }) && level_id.current == LevelID::SonicCD_StardustSpeedwayAct1
+            }
+            LevelID::SonicCD_StardustSpeedwayAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_scd_stardust_speedway_1,
+                    _ => settings.scd_stardust_speedway_1,
+                }) && level_id.current == LevelID::SonicCD_StardustSpeedwayAct2
+            }
+            LevelID::SonicCD_StardustSpeedwayAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_scd_stardust_speedway_2,
+                    _ => settings.scd_stardust_speedway_2,
+                }) && level_id.current == LevelID::SonicCD_StardustSpeedwayAct3
+            }
+            LevelID::SonicCD_StardustSpeedwayAct3 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_scd_stardust_speedway_3,
+                    _ => settings.scd_stardust_speedway_3,
+                }) && level_id.current == LevelID::SonicCD_MetallicMadnessAct1
+            }
+            LevelID::SonicCD_MetallicMadnessAct1 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_scd_metallic_madness_1,
+                    _ => settings.scd_metallic_madness_1,
+                }) && level_id.current == LevelID::SonicCD_MetallicMadnessAct2
+            }
+            LevelID::SonicCD_MetallicMadnessAct2 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_scd_metallic_madness_2,
+                    _ => settings.scd_metallic_madness_2,
+                }) && level_id.current == LevelID::SonicCD_MetallicMadnessAct3
+            }
+            LevelID::SonicCD_MetallicMadnessAct3 => {
+                (match game_mode.current {
+                    GameMode::Story => settings.story_scd_metallic_madness_3,
+                    _ => settings.scd_metallic_madness_3,
+                }) && level_id.current == LevelID::SonicCD_Ending
+            }
+            _ => false,
+        }
+    } else {
+        false
+    }
 }
 
 fn reset(_watchers: &Watchers, _settings: &Settings) -> bool {
@@ -419,8 +1411,6 @@ fn game_time(
     None
 }
 
-const PROCESS_NAMES: &[&str] = &["SonicOrigins.exe"];
-
 #[derive(Debug, Copy, Clone, PartialEq)]
 enum GameStatus {
     MainMenu,
@@ -435,12 +1425,11 @@ enum Game {
     SonicCD,
     Sonic2,
     Sonic3,
-    GameGear,
+    //GameGear,
 }
 
-#[derive(Debug, Copy, Clone, PartialEq, Default)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub enum GameMode {
-    #[default]
     Classic,
     Anniversary,
     BossRush,
